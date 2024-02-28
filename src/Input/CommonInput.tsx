@@ -1,32 +1,34 @@
-import { ChangeEvent, ReactNode, useState } from "react"
+import { ChangeEvent, forwardRef, useState } from "react"
 
 interface SearchInputProps {
   value?: string
   onChange?: (value: string) => void
-  children?: ReactNode
 }
 
-const CommonInput = ({ value: outerStateValue, onChange }: SearchInputProps) => {
-  const isControlled = outerStateValue !== undefined
+const CommonInput = forwardRef<HTMLInputElement, SearchInputProps>(
+  ({ value: outerStateValue, onChange }: SearchInputProps, ref) => {
+    const isControlled = outerStateValue !== undefined
 
-  const [innerStateValue, setInnerStateValue] = useState(outerStateValue)
+    const [innerStateValue, setInnerStateValue] = useState(outerStateValue || "")
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target
-    if (!isControlled) {
-      setInnerStateValue(value)
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+      const { value } = e.target
+      if (!isControlled) {
+        setInnerStateValue(value)
+      }
+      onChange?.(value) // onChange가 있을 경우에만 실행
     }
-    onChange?.(value) // onChange가 있을 경우에만 실행
-  }
 
-  return (
-    <>
-      <input
-        value={isControlled ? outerStateValue : innerStateValue}
-        onChange={handleChange}
-      />
-    </>
-  )
-}
+    return (
+      <>
+        <input
+          ref={ref}
+          value={isControlled ? outerStateValue : innerStateValue}
+          onChange={handleChange}
+        />
+      </>
+    )
+  }
+)
 
 export default CommonInput
