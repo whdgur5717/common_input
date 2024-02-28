@@ -6,7 +6,7 @@ interface SearchInputProps {
   children?: ReactNode
 }
 
-const SearchInput = ({ value: outerStateValue, onChange }: SearchInputProps) => {
+const CommonInput = ({ value: outerStateValue, onChange }: SearchInputProps) => {
   const isControlled = outerStateValue !== undefined
 
   const [innerStateValue, setInnerStateValue] = useState(outerStateValue)
@@ -29,4 +29,4 @@ const SearchInput = ({ value: outerStateValue, onChange }: SearchInputProps) => 
   )
 }
 
-export default SearchInput
+export default CommonInput
